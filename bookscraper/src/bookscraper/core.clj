@@ -37,9 +37,7 @@
     (.deleteOnExit tf)))
 
 (defn -main
-  "I don't do a whole lot ... yet."
-  [& args]
-  (let [links (get-pdf-links "http://www.oreilly.com/openbook/make3/book/index.html")]
+  [url filename]
+  (let [links (get-pdf-links url)]
     (run! save-temp-file links)
-    (merge-pdfs :input @filelist :output "boom-boom.pdf")
-    ))
+    (merge-pdfs :input @filelist :output filename)))
