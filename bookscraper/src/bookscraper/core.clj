@@ -33,11 +33,16 @@
     (swap! filelist conj (.getAbsolutePath tf))
     (with-open [in (io/input-stream link)
                 out (io/output-stream tf)]
-      (io/copy in out))))
+      (io/copy in out))
+    (.deleteOnExit tf)))
 
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
   (let [links (get-pdf-links "http://www.oreilly.com/openbook/make3/book/index.html")]
     (save-temp-file (first links))
-    (println @filelist)))
+    (save-temp-file (second links))
+    (println @filelist)
+   ;; (run! save-temp-file links)
+    (merge-pdfs :input @filelist :output "boom-boom.pdf")
+    ))
