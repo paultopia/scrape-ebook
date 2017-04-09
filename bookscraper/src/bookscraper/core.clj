@@ -26,8 +26,18 @@
 (defn get-pdf-links [url]
   (map (partial fix-link url) (filter #(ends-with? % ".pdf") (get-links url))))
 
+(def filelist (atom []))
+
+(defn save-temp-file [link]
+  (let [tf (java.io.File/createTempFile link ".pdf")]
+    (swap! filelist conj (.getAbsolutePath tf))
+    (with-open [in (io/input-stream link)
+                out (io/output-stream tf)]
+      (io/copy in out))))
 
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
-  (println "Hello, World!"))
+  (let [links (get-pdf-links "http://www.oreilly.com/openbook/make3/book/index.html")]
+    (save-temp-file (first links))
+    (println @filelist)))
