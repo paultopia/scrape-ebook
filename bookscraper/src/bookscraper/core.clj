@@ -6,7 +6,6 @@
     [clojure.java.io :as io]
     [net.cgrand.enlive-html :as html]))
 
-
 (defn fetch-url [url]
   (html/html-resource (java.net.URL. url)))
 
